@@ -2,49 +2,72 @@ package rubikscube;
 
 
 import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
 
 
 public class Sticker {
-    public Main mainClassInstance;
-    public Axis axis;
-    public Direction facing;
+    public int relativePieceSize;
+    public int size;
+    public int depth;
+    public Axis facing;
+    public XYZ position;
     public Color color;
-    public XYZ relativePosition;
     public Box box;
 
 
-    Sticker(Main classInstance, Axis axis, Direction facing, Color color, XYZ relativePosition) {
-        this.mainClassInstance = classInstance;
-        this.axis = axis;
+    Sticker(int relativePieceSize, int size, int depth, Axis facing, XYZ position, Color color) {
+        this.relativePieceSize = relativePieceSize;
+        this.size = size;
+        this.depth = depth;
         this.facing = facing;
+        this.position = position;
         this.color = color;
-        this.relativePosition = relativePosition;
         this.box = new Box();
+
         this.load();
     }
-    public void load() {
-        this.box.setWidth(this.mainClassInstance.stickerDepth);
-        this.box.setHeight(this.mainClassInstance.stickerSize);
-        this.box.setDepth(this.mainClassInstance.stickerSize);
-        this.box.translateXProperty().set(this.relativePosition.x*this.mainClassInstance.pieceSize*1.5);
-        this.box.translateYProperty().set(this.relativePosition.y*this.mainClassInstance.pieceSize);
-        this.box.translateZProperty().set(this.relativePosition.z*this.mainClassInstance.pieceSize);
-        if (this.axis.axisID == 1) {
-            this.box.setWidth(this.mainClassInstance.stickerSize);
-            this.box.setHeight(this.mainClassInstance.stickerDepth);
-            this.box.setDepth(this.mainClassInstance.stickerSize);
-            this.box.translateXProperty().set(this.relativePosition.x*this.mainClassInstance.pieceSize);
-            this.box.translateYProperty().set(this.relativePosition.y*this.mainClassInstance.pieceSize*1.5);
-            this.box.translateZProperty().set(this.relativePosition.z*this.mainClassInstance.pieceSize);
-        } else if (this.axis.axisID == 2) {
-            this.box.setWidth(this.mainClassInstance.stickerSize);
-            this.box.setHeight(this.mainClassInstance.stickerSize);
-            this.box.setDepth(this.mainClassInstance.stickerDepth);
-            this.box.translateXProperty().set(this.relativePosition.x*this.mainClassInstance.pieceSize);
-            this.box.translateYProperty().set(this.relativePosition.y*this.mainClassInstance.pieceSize);
-            this.box.translateZProperty().set(this.relativePosition.z*this.mainClassInstance.pieceSize*1.5);
+
+
+    private void load() {
+        this.box.setWidth(this.depth);
+        this.box.setHeight(this.size);
+        this.box.setDepth(this.size);
+
+        this.box.translateXProperty().set(this.position.x*this.relativePieceSize*1.5);
+        this.box.translateYProperty().set(this.position.y*this.relativePieceSize);
+        this.box.translateZProperty().set(this.position.z*this.relativePieceSize);
+
+        if (this.facing.isY()) {
+
+            this.box.setWidth(this.size);
+            this.box.setHeight(this.depth);
+            this.box.setDepth(this.size);
+
+            this.box.translateXProperty().set(this.position.x*this.relativePieceSize);
+            this.box.translateYProperty().set(this.position.y*this.relativePieceSize*1.5);
+            this.box.translateZProperty().set(this.position.z*this.relativePieceSize);
+
+        } else if (this.facing.isZ()) {
+
+            this.box.setWidth(this.size);
+            this.box.setHeight(this.size);
+            this.box.setDepth(this.depth);
+
+            this.box.translateXProperty().set(this.position.x*this.relativePieceSize);
+            this.box.translateYProperty().set(this.position.y*this.relativePieceSize);
+            this.box.translateZProperty().set(this.position.z*this.relativePieceSize*1.5);
+
         }
-        this.box.setMaterial(SimpleColorMaterial.create(this.color));
+
+        this.setColor(this.color);
+    }
+    public void setColor(Color color) {
+        this.color = color;
+
+        PhongMaterial material = new PhongMaterial(this.color);
+        material.setSpecularColor(this.color);
+
+        this.box.setMaterial(material);
     }
 }

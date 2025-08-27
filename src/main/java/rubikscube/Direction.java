@@ -1,23 +1,33 @@
 package rubikscube;
 
 
+import java.util.Random;
+
+
 public class Direction {
-    public static final Direction POSITIVE = new Direction((byte) 1);
-    public static final Direction NEGATIVE = new Direction((byte) -1);
-    public final byte direction;
+    public static final Direction CLOCKWISE = new Direction(1);
+    public static final Direction COUNTERCLOCKWISE = new Direction(-1);
+
+    public final int direction;
 
 
-    Direction(byte direction) {
+    Direction(int direction) {
         if (direction >= 0) {
             this.direction = 1;
         } else {
             this.direction = -1;
         }
     }
-    public boolean isPositive() {
+
+
+    public boolean isClockwise() {
         return this.direction >= 0;
     }
-    public boolean isNegative() {
+    public boolean isCounterclockwise() {
         return this.direction < 0;
+    }
+
+    public static Direction random() {
+        return new Direction(new Random().nextInt(2)-1);
     }
 }

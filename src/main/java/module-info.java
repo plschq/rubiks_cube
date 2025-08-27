@@ -1,4 +1,4 @@
-module com.example.rubikscube {
+module rubikscube {
 
     requires javafx.controls;
     requires javafx.fxml;
